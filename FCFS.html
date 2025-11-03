@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FCFS Scheduling Animator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>FCFS Scheduling Algorithm Animator</h1>
+
+    <div class="container">
+        <h3>Add Process</h3>
+        <form id="process-form">
+            <div class="form-group">
+                <label for="arrival-time">Arrival Time:</label>
+                <input type="number" id="arrival-time" min="0" value="0" required>
+            </div>
+            <div class="form-group">
+                <label for="burst-time">Burst Time:</label>
+                <input type="number" id="burst-time" min="1" value="1" required>
+            </div>
+            <button type="submit">Add Process</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h3>Process List</h3>
+        <table id="process-table">
+            <thead>
+                <tr>
+                    <th>Process ID</th>
+                    <th>Arrival Time</th>
+                    <th>Burst Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+        <button id="run-btn">Run FCFS</button>
+        <button id="reset-btn">Reset</button>
+    </div>
+
+    <div class="container">
+        <h3>Gantt Chart</h3>
+        <div id="gantt-chart-container">
+            <div id="gantt-chart"></div>
+            <div id="timeline"></div>
+        </div>
+        
+        <h3>Results</h3>
+        <div id="results">
+            </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
