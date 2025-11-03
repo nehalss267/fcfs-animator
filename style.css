@@ -1,0 +1,128 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+.container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+h1, h3 {
+    color: #0056b3;
+    text-align: center;
+}
+h3 { text-align: left; }
+
+/* Form Styling */
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box; /* Important for padding */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+}
+button:hover {
+    background-color: #0056b3;
+}
+#reset-btn {
+    background-color: #dc3545;
+}
+#reset-btn:hover {
+    background-color: #a02734;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+table th {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Gantt Chart Styling */
+#gantt-chart-container {
+    width: 100%;
+    background-color: #eee;
+    border-radius: 4px;
+    padding: 10px;
+    overflow-x: auto;
+    position: relative;
+    min-height: 100px;
+}
+
+#gantt-chart {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    height: 60px;
+}
+
+/* This is the animated process block */
+.gantt-block {
+    height: 100%;
+    position: absolute; /* We use absolute positioning for animation */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    border: 1px solid #333;
+    box-sizing: border-box;
+    /* transition for smooth width change */
+    transition: width 0.5s ease-in-out, left 0.5s ease-in-out;
+}
+
+#timeline {
+    display: flex;
+    position: relative;
+    height: 20px;
+    margin-top: 5px;
+}
+.time-marker {
+    position: absolute;
+    font-size: 12px;
+    color: #555;
+    transform: translateX(-50%); /* Center the text */
+}
+
+#results p {
+    font-size: 1.1em;
+    background: #e6f7ff;
+    border: 1px solid #b3e0ff;
+    padding: 10px;
+    border-radius: 4px;
+}
