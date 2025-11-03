@@ -36,9 +36,9 @@ JavaScript (ES6)	Logic, calculations, and animations
 
 /fcfs-animator
 │
-├── index.html     # Main HTML page (UI)
-├── style.css      # Styling for layout and animation
-└── script.js      # JavaScript logic and FCFS animation
+├── fcfs.html # Main HTML page (UI)
+├── style.css # Styling for layout
+└── script.js # JavaScript logic and FCFS animation
 
 
 ---
