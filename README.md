@@ -1,5 +1,3 @@
----
-
 🧮 FCFS Scheduling Algorithm Animator
 
 A simple and interactive web-based animation tool that visually demonstrates how the First-Come, First-Serve (FCFS) scheduling algorithm works in Operating Systems.
@@ -66,7 +64,7 @@ Average Turnaround Time
 
 1. Download or clone this repository:
 
-git clone https://github.com/your-username/fcfs-animator.git
+git clone https://github.com/nehalss267/fcfs-animator.git
 
 
 2. Open the project folder.
