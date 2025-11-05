@@ -163,15 +163,54 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 6. Display Results Function
-    function displayResults(totalWaitingTime, totalTurnaroundTime) {
-        const avgWaitingTime = totalWaitingTime / processList.length;
-        const avgTurnaroundTime = totalTurnaroundTime / processList.length;
+  // --- MODIFIED RESULTS DISPLAY ---
 
-        resultsDiv.innerHTML = `
-            <p><strong>Average Waiting Time:</strong> ${avgWaitingTime.toFixed(2)}</pre>
-            <p><strong>Average Turnaround Time:</strong> ${avgTurnaroundTime.toFixed(2)}</p>
-        `;
-    }
+// 1. Create the HTML string for the results table
+let resultTableHtml = `
+    <table style="width: 100%; margin-top: 15px;">
+        <thead>
+            <tr>
+                <th>Process ID</th>
+                <th>Arrival Time</th>
+                <th>Burst Time</th>
+                <th>Completion Time</th>
+                <th>Turnaround Time</th>
+                <th>Waiting Time</th>
+            </tr>
+        </thead>
+        <tbody>
+`;
+
+// 2. Add a table row for each process
+processes.forEach(p => {
+    resultTableHtml += `
+        <tr>
+            <td>${p.pid}</td>
+            <td>${p.at}</td>
+            <td>${p.bt}</td>
+            <td>${p.ct}</td>
+            <td>${p.tat}</td>
+            <td>${p.wt}</td>
+        </tr>
+    `;
+});
+
+// 3. Close the table tags
+resultTableHtml += `</tbody></table>`;
+
+// 4. Display the table and the averages
+const resultsDiv = document.getElementById('results');
+resultsDiv.innerHTML = `
+    <h3>Results</h3>
+    ${resultTableHtml}  <br>
+    <p><strong>Average Turnaround Time:</strong> ${avgTat.toFixed(2)}</p>
+    <p><strong>Average Waiting Time:</strong> ${avgWt.toFixed(2)}</p>
+    <br>
+    <h4>Gantt Chart</h4>
+`;
+
+// --- END OF MODIFICATION ---
+
 
     // 7. Reset Function
     function resetAll() {
