@@ -96,6 +96,20 @@ document.addEventListener('DOMContentLoaded', () => {
             totalWaitingTime += waitingTime;
             totalTurnaroundTime += turnaroundTime;
 
+            let res=document.createElement("tr")
+            res.setAttribute('id',`${process.id}`)
+            res.innerHTML=` 
+            <td>${process.id}</td>
+            <td>${process.arrival}</td>
+            <td>${process.burst}</td>
+            <td>${completionTime}</td>
+            <td>${waitingTime}</td>
+            <td>${turnaroundTime}</td>
+            `;
+
+            document.getElementById("results-body").appendChild(res)
+
+
             // Store data for animation
             ganttData.push({
                 id: process.id,
