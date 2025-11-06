@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const ganttChart = document.getElementById('gantt-chart');
     const timeline = document.getElementById('timeline');
     const resultsDiv = document.getElementById('results');
+    
+    // Get the new results table body
+    const resultsTableBody = document.getElementById('results-body');
 
     let processList = [];
     let processIdCounter = 1;
@@ -27,7 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
             id: `P${processIdCounter++}`,
             arrival: arrivalTime,
             burst: burstTime,
-            color: getRandomColor()
+            color: getRandomColor(),
+            // Add properties to store results
+            completionTime: 0,
+            turnaroundTime: 0,
+            waitingTime: 0
         };
 
         processList.push(process);
@@ -69,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ganttChart.innerHTML = '';
         timeline.innerHTML = '';
         resultsDiv.innerHTML = '';
+        resultsTableBody.innerHTML = ''; // <-- MODIFICATION: Clear results table
 
         let currentTime = 0;
         let totalWaitingTime = 0;
@@ -88,13 +96,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentTime = process.arrival;
             }
 
-            // Process execution
-            const completionTime = currentTime + process.burst;
-            const turnaroundTime = completionTime - process.arrival;
-            const waitingTime = turnaroundTime - process.burst;
+            // --- MODIFICATION: Store results in the process object ---
+            process.completionTime = currentTime + process.burst;
+            process.turnaroundTime = process.completionTime - process.arrival;
+            process.waitingTime = process.turnaroundTime - process.burst;
+            // --- End Modification ---
 
-            totalWaitingTime += waitingTime;
-            totalTurnaroundTime += turnaroundTime;
+            totalWaitingTime += process.waitingTime;
+            totalTurnaroundTime += process.turnaroundTime;
 
             // Store data for animation
             ganttData.push({
@@ -104,53 +113,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 color: process.color
             });
 
-            currentTime = completionTime;
+            currentTime = process.completionTime; // Use the stored completion time
         }
 
         // Now, animate the Gantt chart
         await animateGanttChart(ganttData);
 
-        // Finally, display results
+        // --- MODIFICATION: Call new function to populate table ---
+        populateResultsTable();
+        // --- End Modification ---
+
+        // Finally, display average results
         displayResults(totalWaitingTime, totalTurnaroundTime);
     }
-/* NOTE: This new code should be placed INSIDE your existing FCFS 
-   calculation function, right after the loops where you calculate 
-   CT, TAT, and WT for every process.
-*/
 
-// --- START: New code to populate the table ---
 
-// 1. Get the table body element you added to the HTML
-const tableBody = document.getElementById('results-body');
-
-// 2. Clear any previous results from the table
-tableBody.innerHTML = '';
-
-// 3. Loop through your 'processes' array.
-//    (Assuming your process data is in an array named 'processes' 
-//    and has properties like 'pid', 'arrivalTime', 'burstTime', 
-//    'completionTime', 'waitingTime', and 'turnaroundTime')
-
-processes.forEach(p => {
-    
-    // Create a new table row element
-    let row = document.createElement('tr');
-
-    // Set the HTML content for the row
-    row.innerHTML = `
-        <td>${p.pid}</td>
-        <td>${p.arrivalTime}</td>
-        <td>${p.burstTime}</td>
-        <td>${p.completionTime}</td>
-        <td>${p.waitingTime}</td>
-        <td>${p.turnaroundTime}</td>
-    `;
-    
-    // Append the new row to the table body
-    tableBody.appendChild(row);
-});
-
-// --- END: New code to populate the table ---
     // 5. Animation Function
     async function animateGanttChart(ganttData) {
         let maxTime = 0;
@@ -205,10 +182,27 @@ processes.forEach(p => {
 
         resultsDiv.innerHTML = `
             <p><strong>Average Waiting Time:</strong> ${avgWaitingTime.toFixed(2)}</pre>
-            <p><strong>Average Turnaround Time:</strong> ${avgTurnaroundTime.toFixed(2)}</p>
-        `;
-    }
+            <p><strong>Average TurnaroundTime:</strong> ${avgTurnaroundTime.toFixed(2)}</p>
+        `;
+    }
 
+    // --- MODIFICATION: New function to populate the results table ---
+    function populateResultsTable() {
+        // Loop through the processList (which now has all the data)
+        for (const process of processList) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${process.id}</td>
+                <td>${process.arrival}</td>
+                <td>${process.burst}</td>
+                <td>${process.completionTime}</td>
+                <td>${process.waitingTime}</td>
+                <td>${process.turnaroundTime}</td>
+            `;
+            resultsTableBody.appendChild(row);
+        }
+    }
+    // --- End Modification ---
 
 
     // 7. Reset Function
@@ -219,6 +213,7 @@ processes.forEach(p => {
         ganttChart.innerHTML = '';
         timeline.innerHTML = '';
         resultsDiv.innerHTML = '';
+        resultsTableBody.innerHTML = ''; // <-- MODIFICATION: Clear results table
         document.getElementById('process-form').reset();
         document.getElementById('arrival-time').value = 0;
         document.getElementById('burst-time').value = 1;
