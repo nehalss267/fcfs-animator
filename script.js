@@ -171,6 +171,18 @@ document.addEventListener('DOMContentLoaded', () => {
             <p><strong>Average Turnaround Time:</strong> ${avgTurnaroundTime.toFixed(2)}</p>
         `;
     }
+    // after computing for each process: arrivalTime, burstTime, completionTime, waitingTime, turnaroundTime
+    console.log("PID\tARR\tBURST\tCOMP\tWAIT\tTAT");
+    processes.forEach(p => {
+      console.log(
+        p.id + "\t" +
+        p.arrivalTime + "\t" +
+        p.burstTime + "\t" +
+        p.completionTime + "\t" +
+        p.waitingTime + "\t" +
+        p.turnaroundTime
+      );
+    });
 
 
     // 7. Reset Function
