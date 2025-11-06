@@ -7,9 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const ganttChart = document.getElementById('gantt-chart');
     const timeline = document.getElementById('timeline');
     const resultsDiv = document.getElementById('results');
-    
-    // Get the new results table body
-    const resultsTableBody = document.getElementById('results-body');
 
     let processList = [];
     let processIdCounter = 1;
@@ -30,11 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             id: `P${processIdCounter++}`,
             arrival: arrivalTime,
             burst: burstTime,
-            color: getRandomColor(),
-            // Add properties to store results
-            completionTime: 0,
-            turnaroundTime: 0,
-            waitingTime: 0
+            color: getRandomColor()
         };
 
         processList.push(process);
@@ -76,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ganttChart.innerHTML = '';
         timeline.innerHTML = '';
         resultsDiv.innerHTML = '';
-        resultsTableBody.innerHTML = ''; // <-- MODIFICATION: Clear results table
 
         let currentTime = 0;
         let totalWaitingTime = 0;
@@ -96,14 +88,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentTime = process.arrival;
             }
 
-            // --- MODIFICATION: Store results in the process object ---
-            process.completionTime = currentTime + process.burst;
-            process.turnaroundTime = process.completionTime - process.arrival;
-            process.waitingTime = process.turnaroundTime - process.burst;
-            // --- End Modification ---
+            // Process execution
+            const completionTime = currentTime + process.burst;
+            const turnaroundTime = completionTime - process.arrival;
+            const waitingTime = turnaroundTime - process.burst;
 
-            totalWaitingTime += process.waitingTime;
-            totalTurnaroundTime += process.turnaroundTime;
+            totalWaitingTime += waitingTime;
+            totalTurnaroundTime += turnaroundTime;
 
             // Store data for animation
             ganttData.push({
@@ -113,17 +104,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 color: process.color
             });
 
-            currentTime = process.completionTime; // Use the stored completion time
+            currentTime = completionTime;
         }
 
         // Now, animate the Gantt chart
         await animateGanttChart(ganttData);
 
-        // --- MODIFICATION: Call new function to populate table ---
-        populateResultsTable();
-        // --- End Modification ---
-
-        // Finally, display average results
+        // Finally, display results
         displayResults(totalWaitingTime, totalTurnaroundTime);
     }
 
@@ -182,27 +169,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         resultsDiv.innerHTML = `
             <p><strong>Average Waiting Time:</strong> ${avgWaitingTime.toFixed(2)}</pre>
-            <p><strong>Average TurnaroundTime:</strong> ${avgTurnaroundTime.toFixed(2)}</p>
-        `;
-    }
+            <p><strong>Average Turnaround Time:</strong> ${avgTurnaroundTime.toFixed(2)}</p>
+        `;
+    }
 
-    // --- MODIFICATION: New function to populate the results table ---
-    function populateResultsTable() {
-        // Loop through the processList (which now has all the data)
-        for (const process of processList) {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${process.id}</td>
-                <td>${process.arrival}</td>
-                <td>${process.burst}</td>
-                <td>${process.completionTime}</td>
-                <td>${process.waitingTime}</td>
-                <td>${process.turnaroundTime}</td>
-            `;
-            resultsTableBody.appendChild(row);
-        }
-    }
-    // --- End Modification ---
 
 
     // 7. Reset Function
@@ -213,7 +183,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ganttChart.innerHTML = '';
         timeline.innerHTML = '';
         resultsDiv.innerHTML = '';
-        resultsTableBody.innerHTML = ''; // <-- MODIFICATION: Clear results table
         document.getElementById('process-form').reset();
         document.getElementById('arrival-time').value = 0;
         document.getElementById('burst-time').value = 1;
