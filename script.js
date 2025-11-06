@@ -113,7 +113,44 @@ document.addEventListener('DOMContentLoaded', () => {
         // Finally, display results
         displayResults(totalWaitingTime, totalTurnaroundTime);
     }
+/* NOTE: This new code should be placed INSIDE your existing FCFS 
+   calculation function, right after the loops where you calculate 
+   CT, TAT, and WT for every process.
+*/
 
+// --- START: New code to populate the table ---
+
+// 1. Get the table body element you added to the HTML
+const tableBody = document.getElementById('results-body');
+
+// 2. Clear any previous results from the table
+tableBody.innerHTML = '';
+
+// 3. Loop through your 'processes' array.
+//    (Assuming your process data is in an array named 'processes' 
+//    and has properties like 'pid', 'arrivalTime', 'burstTime', 
+//    'completionTime', 'waitingTime', and 'turnaroundTime')
+
+processes.forEach(p => {
+    
+    // Create a new table row element
+    let row = document.createElement('tr');
+
+    // Set the HTML content for the row
+    row.innerHTML = `
+        <td>${p.pid}</td>
+        <td>${p.arrivalTime}</td>
+        <td>${p.burstTime}</td>
+        <td>${p.completionTime}</td>
+        <td>${p.waitingTime}</td>
+        <td>${p.turnaroundTime}</td>
+    `;
+    
+    // Append the new row to the table body
+    tableBody.appendChild(row);
+});
+
+// --- END: New code to populate the table ---
     // 5. Animation Function
     async function animateGanttChart(ganttData) {
         let maxTime = 0;
@@ -171,18 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <p><strong>Average Turnaround Time:</strong> ${avgTurnaroundTime.toFixed(2)}</p>
         `;
     }
-    // after computing for each process: arrivalTime, burstTime, completionTime, waitingTime, turnaroundTime
-    console.log("PID\tARR\tBURST\tCOMP\tWAIT\tTAT");
-    processes.forEach(p => {
-      console.log(
-        p.id + "\t" +
-        p.arrivalTime + "\t" +
-        p.burstTime + "\t" +
-        p.completionTime + "\t" +
-        p.waitingTime + "\t" +
-        p.turnaroundTime
-      );
-    });
+
 
 
     // 7. Reset Function
